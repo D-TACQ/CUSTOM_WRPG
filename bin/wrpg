@@ -48,10 +48,10 @@ foreach timeat [lsort -integer [array names d32_stl]] {
 	puts [format "%d,%08x" $timeat $d32_stl($timeat)]
 }
 close $ffifo
-/usr/local/CARE/WRPG/prime_FIFO $DS
+exec /usr/local/CARE/WRPG/prime_FIFO $DS
 
 # Clear GPG Enable
-set.site 0 gpg_enable 0
+exec set.site 0 gpg_enable 0
 
 puts "gpg_stl"
 foreach timeat [lsort -integer [array names gpg_stl]] {
@@ -60,8 +60,8 @@ foreach timeat [lsort -integer [array names gpg_stl]] {
 }
 
 # Set GPG to ONESHOT and Enable GPG
-set.site 0 gpg_mode 0
-set.site 0 gpg_enable 1
+exec set.site 0 gpg_mode 0
+exec set.site 0 gpg_enable 1
 
 if { $eof_sent } {
 	puts "QUIT on EOF"
