@@ -6,7 +6,7 @@
 set DS 6
 set GBIT	0x01
 set HITIME	10
-
+set eof_sent	0
 
 if { $::argc > 0 } {
 	foreach arg $::argv {
@@ -23,7 +23,10 @@ array set d32_stl {}
 set ii 0
 while { [gets stdin line] >= 0 } {
 	incr ii
-	if { [string length $line] < 3 } {
+	if { [string match "EOF" $line] } {
+		set eof_sent 1
+		break
+	} elseif { [string length $line] < 3 } {
 		continue
 	} elseif { [string match "#*" $line] } {
 		continue
@@ -60,5 +63,7 @@ foreach timeat [lsort -integer [array names gpg_stl]] {
 set.site 0 gpg_mode 0
 set.site 0 gpg_enable 1
 
-
+if { $eof_sent } {
+	puts "QUIT on EOF"
+}
 
