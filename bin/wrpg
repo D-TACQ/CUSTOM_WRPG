@@ -3,3 +3,28 @@
 # take an STL from stdin, configure the times on the GPG, the states on the DIO FFIFO
 
 
+set DS 6
+
+if { $::argc > 0 } {
+	foreach arg $::argv {
+		set DS $::argv
+		break
+	}
+}
+
+puts "DS $DS"
+
+set ii 0
+while { [gets stdin line] >= 0 } {
+	incr ii
+	if { [string length $line] < 3 } {
+		continue
+	} elseif { [string match "#*" $line] } {
+		continue
+	} elseif { [scan $line "%d,%x" usecs state] != 2 } {
+		puts "STL ERROR at line $ii $line"
+	} else {
+		puts [format "GOOD %d %x" $usecs $state]
+	}
+}
+
