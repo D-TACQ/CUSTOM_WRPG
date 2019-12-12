@@ -1,0 +1,33 @@
+# Clear GPG Enable
+set.site 0 gpg_enable 0
+
+# Record value of GPG_TRG at start of script
+prev_gpg_trg="$(get.site 0 gpg_trg)"
+prev_gpg_trg=${prev_gpg_trg:8:5}
+echo $prev_gpg_trg
+
+set.site 0 gpg_trg 0,0,0
+
+# Load short pattern of clocks to prime FIFO for output on next clock
+nc localhost 4541 << EOF
+0,0
+10,f
+15,0
+20,f
+25,0
+30,f
+35,0
+40,f
+45,0
+50,f
+55,0
+EOF
+
+# Set GPG to ONESHOT and Enable GPG
+set.site 0 gpg_mode 0
+set.site 0 gpg_enable 1
+
+sleep 1
+
+# Restore GPG_TRG to previous value
+set.site 0 gpg_trg ${prev_gpg_trg}
