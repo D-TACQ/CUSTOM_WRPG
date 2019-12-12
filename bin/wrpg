@@ -31,7 +31,7 @@ while { [gets stdin line] >= 0 } {
 	} else {
 #		puts [format "GOOD %d %x" $usecs $state]
 		set gpg_stl($usecs) $GBIT
-		set d32_stl($ii) $state
+		set d32_stl([expr $ii - 1]) $state
 	}
 }
 
@@ -41,9 +41,13 @@ foreach timeat [lsort -integer [array names gpg_stl]] {
 }
 
 puts "d32_stl"
+set ::env(STL2RAW_NOFILL) 1
+set ffifo [open {|stl2raw > /tmp/ffifo} w]
 foreach timeat [lsort -integer [array names d32_stl]] {
+	puts $ffifo [format "%d,%08x" $timeat $d32_stl($timeat)]
 	puts [format "%d,%08x" $timeat $d32_stl($timeat)]
 }
+close $ffifo
 
 
 
