@@ -8,3 +8,14 @@ EOF
 
 inetd /etc/inetd.wrpg.conf
 
+if [ -e /mnt/local/config_wrpg ]; then
+	echo "init_wrpg execute user config /mnt/local/config_wrpg"
+	/mnt/local/config_wrpg
+else
+	echo "init_wrpg execute default config /usr/local/CARE/WRPG/config_wrpg"
+	/usr/local/CARE/WRPG/config_wrpg
+fi
+
+
+
+

@@ -1,8 +1,8 @@
 README for package: custom_wrpg
 
-Implements White Rabbit Pattern Generator:
+Implements White Rabbit PULSE Generator:
 
-NB: this is a SPARSE PATTERN: up to 256 states, up to 60s duration.
+NB: this is a SPARSE PULSE PATTERN: up to 256 states, up to 60s duration.
 
 States can be 
 32 bit (output on single DIO482, site 6) or
@@ -23,6 +23,11 @@ Control by loading STL to one of the following Fixed Ports
 NB: while other sites, other widths are in theory possible, they are not catered for.
 If another combination is required, please contact D-TACQ for advice.
 
+Default boot configuration is via 
+/usr/local/CARE/WRPG/config_wrpg
+
+May be overridden by the user as 
+/mnt/local/config_wrpg
 
 COMPATIBILITY:
 
