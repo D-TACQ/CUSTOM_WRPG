@@ -4,6 +4,8 @@
 
 
 set DS 6
+set GBIT	0x01
+
 
 if { $::argc > 0 } {
 	foreach arg $::argv {
@@ -13,6 +15,9 @@ if { $::argc > 0 } {
 }
 
 puts "DS $DS"
+
+array set gpg_stl {}
+array set d32_stl {}
 
 set ii 0
 while { [gets stdin line] >= 0 } {
@@ -24,7 +29,21 @@ while { [gets stdin line] >= 0 } {
 	} elseif { [scan $line "%d,%x" usecs state] != 2 } {
 		puts "STL ERROR at line $ii $line"
 	} else {
-		puts [format "GOOD %d %x" $usecs $state]
+#		puts [format "GOOD %d %x" $usecs $state]
+		set gpg_stl($usecs) $GBIT
+		set d32_stl($ii) $state
 	}
 }
+
+puts "gpg_stl"
+foreach timeat [lsort -integer [array names gpg_stl]] {
+	puts [format "%d,%02x" $timeat $gpg_stl($timeat)]
+}
+
+puts "d32_stl"
+foreach timeat [lsort -integer [array names d32_stl]] {
+	puts [format "%d,%08x" $timeat $d32_stl($timeat)]
+}
+
+
 
