@@ -8,15 +8,22 @@ DOS=${DOS:-6}
 set.site 0 SIG:SRC:SYNC:0 WRPPS
 
 # Set Site $AIS Clock to WR 20 MHz and divide down (synchronously) to 200 kHz
-set.site $AIS clk 1,0,1
+set.site $AIS clk 1,1,1
 set.site $AIS clkdiv 1000
 set.site $AIS sync 1,0,1
+set.site $AIS trg 1,1,1
 
 # Set Site $DOS Clock to WR 20 MHz and divide down (synchronsously) to 1 MHz
-set.site $DOS clk 1,1,1
-set.site $DOS clkdiv 100
+set.site $DOS clk 1,0,1
+set.site $DOS clkdiv 1
 set.site $DOS sync 1,0,1
-set.site $DOS trg 1,1,1
+set.site $DOS trg 0,0,0
+set.site $DOC sod 1
+
+# Optional for monitoring GPG output
+set.site 0 SIG:EVENT_SRC:0 GPG
+set.site 0 SIG:FP:GPIO EVT0
+
 
 # Initialise Site 6 DIO Module in Clocked Mode, all output
 # Site Byte1,Byte2,Byte3,Byte4 ByteX = 1 for output, 0 for input
