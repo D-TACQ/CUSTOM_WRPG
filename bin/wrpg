@@ -1,0 +1,5 @@
+#!/usr/bin/expect
+# White Rabbit Pattern Generator
+# take an STL from stdin, configure the times on the GPG, the states on the DIO FFIFO
+
+

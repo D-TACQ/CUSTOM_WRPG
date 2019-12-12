@@ -1,0 +1,10 @@
+#!/bin/sh
+# 32 bit service at port 4606 implements WRPG on DIO482 in site 6     
+# 64 bit service at port 4656 implements WRPG on DIO482 in site 5 and 6
+
+cat - > /etc/inetd.wrpg.conf <<EOF
+4606 stream tcp nowait root wrpg wrpg 6
+EOF
+
+inetd /etc/inetd.wrpg.conf
+

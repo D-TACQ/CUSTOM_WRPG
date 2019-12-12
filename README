@@ -1,0 +1,38 @@
+README for package: custom_wrpg
+
+Implements White Rabbit Pattern Generator:
+
+NB: this is a SPARSE PATTERN: up to 256 states, up to 60s duration.
+
+States can be 
+32 bit (output on single DIO482, site 6) or
+64 bit (output on DIO482 in site 5 and site 6)
+
+WRGPG is programmed by an STL:
+TIME,STATE32[,STATE32]
+
+TIME is a count of WR1MHz starting at WRTT where
+
+WR1MHz is a 1MHz clock derived from White Rabbit
+WRTT is the White Rabbit Time Trigger set concurrently on all participating ACQ2106 units.
+
+Control by loading STL to one of the following Fixed Ports
+4606 : loads a 32 bit STL to the DIO482 in Site 6
+4656 : loads a 64 bit STL to the DIO482 in Site 5 and Site 6.
+
+NB: while other sites, other widths are in theory possible, they are not catered for.
+If another combination is required, please contact D-TACQ for advice.
+
+
+COMPATIBILITY:
+
+WRPG runs a Sparse Pattern Generator. The time intervals come from the 
+Gate Pulse Generator GPG, a hardware STL machine
+
+The STATES are output from the DIO482 32 bit DIO module.
+
+This means that the GPG should not be used for other purposes when WRPG is active.
+This means that the standard DPG function "Digital Waveform" should not be enabled.
+
+
+
