@@ -1,37 +1,30 @@
+#!/bin/sh
+# config_wrpg assumes an AI at site 1, a DO at site 6. run ONCE at boot
 
-
-# Reserve some buffers for DPG output
-#NB=$(cat /sys/module/acq420fmc/parameters/nbuffers)
-#echo $(($NB-10)) > /sys/module/acq420fmc/parameters/distributor_first_buffer
-#echo 256 > /sys/module/acq420fmc/parameters/distributor_first_buffer
+AIS=${AIS:-1}
+DOS=${DOS:-6}
 
 # Push the WR PPS onto d0 of the SYNC Bus
 set.site 0 SIG:SRC:SYNC:0 WRPPS
 
-# Set Site 1 Clock to WR 20 MHz and divide down (synchronously) to 200 kHz
-set.site 1 clk 1,1,1
-set.site 1 clkdiv 1000
-set.site 1 sync 1,0,1
+# Set Site $AIS Clock to WR 20 MHz and divide down (synchronously) to 200 kHz
+set.site $AIS clk 1,0,1
+set.site $AIS clkdiv 1000
+set.site $AIS sync 1,0,1
 
-# Set Site 6 Clock to WR 20 MHz and divide down (synchronsously) to 1 MHz
-set.site 6 clk 1,1,1
-#set.site 6 clkdiv 20
-set.site 6 clkdiv 100
-set.site 6 sync 1,0,1
-set.site 6 trg 1,1,1
+# Set Site $DOS Clock to WR 20 MHz and divide down (synchronsously) to 1 MHz
+set.site $DOS clk 1,1,1
+set.site $DOS clkdiv 100
+set.site $DOS sync 1,0,1
+set.site $DOS trg 1,1,1
 
 # Initialise Site 6 DIO Module in Clocked Mode, all output
 # Site Byte1,Byte2,Byte3,Byte4 ByteX = 1 for output, 0 for input
 #/usr/local/CARE/dio432init.clocked 6 1,1,1,1 This is the correct way to configure a DIO in clocked mode
 # However, it also sets FPMUX to FP. Not helpful! Workaround below
-set.site 6 byte_is_output 1,1,1,1
+set.site $DOS byte_is_output 1,1,1,1
 #set.site 6 byte_is_output 0,0,0,0
-set.site 6 mode 2
+set.site $DOS mode 2
 
-# Include Site 6 in Distributor set ready for DPG
-#play0 6
-
-# Modified stl2raw.load, original implementation only allows site 1
-#cp /mnt/local/stl2raw.load /usr/local/bin
 
 
