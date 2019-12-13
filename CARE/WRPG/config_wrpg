@@ -18,7 +18,7 @@ set.site $DOS clk 1,0,1
 set.site $DOS clkdiv 1
 set.site $DOS sync 1,0,1
 set.site $DOS trg 0,0,0
-set.site $DOC sod 1
+set.site $DOS sod 1
 
 # Optional for monitoring GPG output
 set.site 0 SIG:EVENT_SRC:0 GPG
