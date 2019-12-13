@@ -33,31 +33,39 @@ while { [gets stdin line] >= 0 } {
 	} elseif { [scan $line "%d,%x" usecs state] != 2 } {
 		puts "STL ERROR at line $ii $line"
 	} else {
-		puts [format "GOOD %d %x" $usecs $state]
+#		puts [format "GOOD %d %x" $usecs $state]
 		set gpg_stl($usecs) $GBIT
 		set d32_stl([expr $ii - 1]) $state
 	}
 }
 
-puts "d32_stl"
 set ::env(STL2RAW_NOFILL) 1
 set D32_FFIFO	[format "/dev/acq400.%d.awg" $DS]
-set ffifo [open {|stl2raw > $D32_FIFO} w]
+set ffifo [open |[list stl2raw $D32_FFIFO] w]
+puts "d32_stl output to $D32_FFIFO $ffifo"
 foreach timeat [lsort -integer [array names d32_stl]] {
 	puts $ffifo [format "%d,%08x" $timeat $d32_stl($timeat)]
-	puts [format "%d,%08x" $timeat $d32_stl($timeat)]
+#	puts [format "%d,%08x" $timeat $d32_stl($timeat)]
+	flush $ffifo
 }
 close $ffifo
+
+
 exec /usr/local/CARE/WRPG/prime_FIFO $DS
 
 # Clear GPG Enable
 exec set.site 0 gpg_enable 0
 
-puts "gpg_stl"
+set GPG /dev/acq400.0.gpg
+set gpgf [open |[list stl2gpg $GPG] w]
+puts "gpg_stl $GPG $gpgf"
 foreach timeat [lsort -integer [array names gpg_stl]] {
-	puts [format "%d,%02x" $timeat $gpg_stl($timeat)]
-	puts [format "%d,%02x" [expr $timeat + $HITIME] 0]
+	puts $gpgf [format "%d,%02x" $timeat $gpg_stl($timeat)]
+	flush $gpgf
+	puts $gpgf [format "%d,%02x" [expr $timeat + $HITIME] 0]
+	flush $gpgf
 }
+close $gpgf
 
 # Set GPG to ONESHOT and Enable GPG
 exec set.site 0 gpg_mode 0
