@@ -20,6 +20,11 @@ set.site $DOS sync 1,0,1
 set.site $DOS trg 0,0,0
 set.site $DOS sod 1
 
+# GPG setup
+set.site 0 SIG:SRC:CLK:0 GPG0
+set.site 0 gpg_trg 1,1,1
+/usr/local/epics/scripts/gpg_monitor 1
+
 # Optional for monitoring GPG output
 set.site 0 SIG:EVENT_SRC:0 GPG
 set.site 0 SIG:FP:GPIO EVT0
