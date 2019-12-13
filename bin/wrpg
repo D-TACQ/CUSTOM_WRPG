@@ -46,7 +46,6 @@ puts "d32_stl output to $D32_FFIFO $ffifo"
 foreach timeat [lsort -integer [array names d32_stl]] {
 	puts $ffifo [format "%d,%08x" $timeat $d32_stl($timeat)]
 #	puts [format "%d,%08x" $timeat $d32_stl($timeat)]
-	flush $ffifo
 }
 close $ffifo
 
@@ -61,11 +60,10 @@ set gpgf [open |[list stl2gpg $GPG] w]
 puts "gpg_stl $GPG $gpgf"
 foreach timeat [lsort -integer [array names gpg_stl]] {
 	puts $gpgf [format "%d,%02x" $timeat $gpg_stl($timeat)]
-	flush $gpgf
 	puts $gpgf [format "%d,%02x" [expr $timeat + $HITIME] 0]
-	flush $gpgf
 }
-close $gpgf
+puts $gpgf "EOF"
+#close $gpgf 
 
 # Set GPG to ONESHOT and Enable GPG
 exec set.site 0 gpg_mode 0
