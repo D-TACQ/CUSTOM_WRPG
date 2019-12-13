@@ -36,6 +36,7 @@ while { [gets stdin line] >= 0 } {
 #		puts [format "GOOD %d %x" $usecs $state]
 		set gpg_stl($usecs) $GBIT
 		set d32_stl([expr $ii - 1]) $state
+		puts "ok $ii>"
 	}
 }
 
