@@ -64,7 +64,8 @@ foreach timeat [lsort -integer [array names gpg_stl]] {
 	puts $gpgf [format "%d,%02x" [expr $timeat + $HITIME] 0]
 }
 puts $gpgf "EOF"
-#close $gpgf 
+flush $gpgf 
+
 
 # Set GPG to ONESHOT and Enable GPG
 exec set.site 0 gpg_mode 0
